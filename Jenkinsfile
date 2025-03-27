@@ -15,10 +15,10 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                sh 'mvn clean test'
+                dir('testng-test-project') {  // Change to the correct subdirectory
+                    sh 'mvn clean test'
+                }
             }
-        }
-
         stage('Publish Test Results') {
             steps {
                 junit '**/target/surefire-reports/*.xml'
