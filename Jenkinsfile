@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     tools {
-        maven 'maven3' // Ensure Maven is configured in Jenkins
-        jdk 'java'     // Ensure Java is configured in Jenkins
+        maven 'maven3'
+        jdk 'java'
     }
 
     environment {
-        RECIPIENTS = 'team@example.com' // Change to actual email recipients
+        RECIPIENTS = 'team@example.com'
     }
 
     stages {
@@ -19,16 +19,14 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                dir('testng-test-project') {  // Change to the correct subdirectory
-                    sh 'mvn clean test'
-                }
+                sh 'mvn clean test'
             }
         }
 
         stage('Publish Test Results') {
             steps {
-                junit 'testng-test-project/target/surefire-reports/*.xml'
-                archiveArtifacts artifacts: 'testng-test-project/target/*.jar', fingerprint: true
+                junit '**/target/surefire-reports/testng-results.xml'  // Updated to use ** wildcard
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
     }
